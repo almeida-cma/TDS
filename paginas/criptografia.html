@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demonstrativo de Criptografia</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #2d2d2d;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #title {
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        #content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        #code {
+            color: white;
+            font-size: 16px;
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.4;
+            width: 30%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            overflow-y: auto;
+            margin: 10px;
+        }
+        #result {
+            color: white;
+            font-size: 16px;
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.4;
+            width: 70%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            overflow-y: auto;
+            margin: 10px;
+        }
+        #status {
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        @media (max-width: 768px) {
+            #content {
+                flex-direction: column;
+            }
+            #code, #result {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="title">Demonstrativo de Criptografia</div>
+<div id="content">
+    <div id="code"></div>
+    <div id="result"></div>
+</div>
+<div id="status">Status: Inicializando...</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.js"></script>
+<script>
+    const plainText = "senha123";
+    const codeLines = [
+        "// Texto plano",
+        `const plainText = "${plainText}";`,
+        "",
+        "// Criptografia AES",
+        "const aesEncrypted = CryptoJS.AES.encrypt(plainText, 'chave-secreta').toString();",
+        "",
+        "// Criptografia RSA (simulação)",
+        "const rsaEncrypted = btoa(plainText);",
+        "",
+        "// Hash SHA-256",
+        "const sha256Hash = CryptoJS.SHA256(plainText).toString(CryptoJS.enc.Hex);",
+        "",
+        "// Resultados",
+        "console.log('AES:', aesEncrypted);",
+        "console.log('RSA:', rsaEncrypted);",
+        "console.log('SHA-256:', sha256Hash);"
+    ];
+
+    let codeIndex = 0;
+    function updateCode() {
+        if (codeIndex < codeLines.length) {
+            document.getElementById('code').textContent += codeLines[codeIndex] + "\n";
+            codeIndex++;
+            setTimeout(updateCode, 500); // Intervalo de 500ms entre cada linha de código
+        } else {
+            displayResults();
+        }
+    }
+
+    function displayResults() {
+        const aesEncrypted = CryptoJS.AES.encrypt(plainText, 'chave-secreta').toString();
+        const rsaEncrypted = btoa(plainText); // Simulação de RSA
+        const sha256Hash = CryptoJS.SHA256(plainText).toString(CryptoJS.enc.Hex);
+
+        const resultElement = document.getElementById('result');
+        resultElement.textContent = "Texto Plano:\n";
+        resultElement.textContent += `${plainText}\n\n`;
+        resultElement.textContent += "Resultados:\n";
+        resultElement.textContent += `AES: ${aesEncrypted}\n\n`;
+        resultElement.textContent += `RSA: ${rsaEncrypted}\n\n`;
+        resultElement.textContent += `SHA-256: ${sha256Hash}\n`;
+    }
+
+    updateCode();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de Rede Ethernet - Topologia Estrela</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #2d2d2d;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #title {
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px;
+        }
+        #content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #code {
+            color: white;
+            font-size: 16px;
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.4;
+            width: 30%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            overflow-y: auto;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+        #status {
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        #canvas-container {
+            flex: 1;
+            margin: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        @media (max-width: 1024px) {
+            #code {
+                width: 45%;
+            }
+            #canvas-container {
+                width: 100%;
+                height: calc(50vh - 20px);
+            }
+        }
+        @media (max-width: 768px) {
+            #title {
+                font-size: 20px;
+            }
+            #content {
+                flex-direction: column;
+                align-items: center;
+            }
+            #code {
+                width: 90%;
+                height: 200px;
+                font-size: 14px;
+            }
+            #canvas-container {
+                width: 90%;
+                height: calc(50vh - 40px);
+            }
+            #status {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            #code {
+                font-size: 12px;
+                padding: 10px;
+            }
+            #status {
+                font-size: 12px;
+            }
+            #title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="title">Simulação de Rede Ethernet - Topologia Estrela</div>
+<div id="content">
+    <div id="code"></div>
+    <div id="canvas-container"></div>
+</div>
+<div id="status">Status: Conectando...</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    // Cena, câmera e renderizador
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth * 0.7 / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth * 0.7, window.innerHeight);
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    // Ajustar tamanho do renderizador ao redimensionar a janela
+    window.addEventListener('resize', () => {
+        const width = document.getElementById('canvas-container').clientWidth;
+        const height = document.getElementById('canvas-container').clientHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    });
+
+    // Luzes
+    const ambientLight = new THREE.AmbientLight(0x404040, 2); // Luz ambiente suave
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Luz direcional
+    directionalLight.position.set(5, 5, 5).normalize();
+    scene.add(directionalLight);
+
+    // Função para criar dispositivos (computadores, switch, etc.)
+    function createDevice(x, y, z, color = 0x0077ff, name = '') {
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshPhongMaterial({ color, transparent: true, opacity: 0.7 });
+        const cube = new THREE.Mesh(geometry, material);
+
+        // Realçar arestas
+        const edges = new THREE.EdgesGeometry(geometry);
+        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff }));
+
+        cube.add(line);
+        cube.position.set(x, y, z);
+        cube.userData = { type: 'device', name: name };
+        return cube;
+    }
+
+    // Função para criar cabos (conexões)
+    function createCable(startX, startY, startZ, endX, endY, endZ) {
+        const material = new THREE.LineBasicMaterial({ color: 0xff6600 });
+        const points = [
+            new THREE.Vector3(startX, startY, startZ),
+            new THREE.Vector3(endX, endY, endZ)
+        ];
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(geometry, material);
+        return line;
+    }
+
+    // Criando objetos de rede (dispositivos)
+    const centralSwitch = createDevice(0, 0, 0, 0x00ff00, 'Switch Central');
+    const computer1 = createDevice(-3, 0, -5, 0xff0000, 'Computador 1');
+    const computer2 = createDevice(3, 0, -5, 0xff0000, 'Computador 2');
+    const computer3 = createDevice(-3, 0, 5, 0xff0000, 'Computador 3');
+    const computer4 = createDevice(3, 0, 5, 0xff0000, 'Computador 4');
+
+    // Adicionando dispositivos à cena
+    scene.add(centralSwitch);
+
+    // Posicionando a câmera
+    camera.position.z = 10;
+
+    // Função de animação para desenhar o código e a topologia
+    let codeIndex = 0;
+    const codeLines = [
+        "const scene = new THREE.Scene();",
+        "const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);",
+        "const renderer = new THREE.WebGLRenderer();",
+        "renderer.setSize(window.innerWidth, window.innerHeight);",
+        "document.body.appendChild(renderer.domElement);",
+        "const ambientLight = new THREE.AmbientLight(0x404040, 2);",
+        "scene.add(ambientLight);",
+        "const directionalLight = new THREE.DirectionalLight(0xffffff, 1);",
+        "scene.add(directionalLight);",
+        "function createDevice(x, y, z, color, name) { ... }",
+        "function createCable(startX, startY, startZ, endX, endY, endZ) { ... }",
+        "scene.add(centralSwitch);",
+        "scene.add(computer1);",
+        "scene.add(computer2);",
+        "scene.add(computer3);",
+        "scene.add(computer4);",
+        "camera.position.z = 10;",
+        "animate();"
+    ];
+
+    // Exibindo o código de forma fluida
+    function updateCode() {
+        if (codeIndex < codeLines.length) {
+            document.getElementById('code').textContent += codeLines[codeIndex] + "\n";
+            codeIndex++;
+            setTimeout(updateCode, 500); // Intervalo de 500ms entre cada linha de código
+        } else {
+            setTimeout(animateTopology, 500); // Iniciar a animação da topologia após o código ser exibido
+        }
+    }
+
+    // Função de animação da topologia (dispositivos e cabos)
+    let devicesPlaced = 0;
+    let cablesDrawn = 0;
+    function animateTopology() {
+        // Adicionando dispositivos gradualmente
+        if (devicesPlaced === 0) {
+            scene.add(computer1);
+            devicesPlaced++;
+            setTimeout(animateTopology, 1000); // Intervalo de 1000ms entre cada dispositivo
+        } else if (devicesPlaced === 1) {
+            scene.add(computer2);
+            devicesPlaced++;
+            setTimeout(animateTopology, 1000);
+        } else if (devicesPlaced === 2) {
+            scene.add(computer3);
+            devicesPlaced++;
+            setTimeout(animateTopology, 1000);
+        } else if (devicesPlaced === 3) {
+            scene.add(computer4);
+            devicesPlaced++;
+            setTimeout(animateTopology, 1000);
+        }
+
+        // Desenhando os cabos gradualmente
+        if (devicesPlaced === 4 && cablesDrawn === 0) {
+            let cable1 = createCable(-3, 0, -5, 0, 0, 0); // Computador 1 para Switch
+            let cable2 = createCable(3, 0, -5, 0, 0, 0); // Computador 2 para Switch
+            let cable3 = createCable(-3, 0, 5, 0, 0, 0); // Computador 3 para Switch
+            let cable4 = createCable(3, 0, 5, 0, 0, 0); // Computador 4 para Switch
+            scene.add(cable1);
+            scene.add(cable2);
+            scene.add(cable3);
+            scene.add(cable4);
+            cablesDrawn++; 
+        }
+    }
+
+    // Função de animação
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // Renderizando a cena
+        renderer.render(scene, camera);
+    }
+
+    // Iniciando animação
+    updateCode(); // Iniciar a exibição do código
+    animate(); // Iniciar a animação da cena
+</script>
+
+</body>
+</html>

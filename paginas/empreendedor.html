@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de App - Transporte Sustentável</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #e8f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .mobile-frame {
+            background: #fff;
+            width: 90%;
+            max-width: 350px;
+            height: 80vh;
+            border: 10px solid #ddd;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        #editor {
+            background-color: #111;
+            color: #00ff00;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            word-wrap: break-word;
+            flex-grow: 1;
+        }
+
+        #app-preview {
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            font-size: 16px;
+            overflow-y: auto;
+            flex-grow: 1;
+            max-height: 50%;
+        }
+
+        .option-card {
+            background-color: #f4f8fb;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-card h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .option-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .option-actions i {
+            font-size: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .option-actions .book {
+            color: #007bff;
+        }
+
+        .option-actions .book:hover {
+            opacity: 0.7;
+        }
+
+        .add-option {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .add-option:hover {
+            background-color: #218838;
+        }
+
+        .add-option i {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulação de App - Transporte Sustentável</h1>
+    <div class="mobile-frame">
+        <div id="editor"></div>
+        <div id="app-preview">
+            <p>Carregando opções de transporte sustentável...</p>
+        </div>
+    </div>
+
+    <script>
+        const editor = document.getElementById("editor");
+        const appPreview = document.getElementById("app-preview");
+
+        const appCode = `
+// Código Kotlin para Transporte Sustentável no Android
+
+class SustainableTransport(val type: String, val location: String, var isBooked: Boolean)
+
+class TransportAdapter(val transports: List<SustainableTransport>) : RecyclerView.Adapter<TransportAdapter.TransportViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransportViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.transport_item, parent, false)
+        return TransportViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: TransportViewHolder, position: Int) {
+        val transport = transports[position]
+        holder.typeTextView.text = transport.type
+        holder.locationTextView.text = transport.location
+        holder.bookButton.setOnClickListener {
+            transport.isBooked = !transport.isBooked
+            notifyItemChanged(position)
+        }
+    }
+
+    override fun getItemCount() = transports.size
+
+    class TransportViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val typeTextView: TextView = itemView.findViewById(R.id.transport_type)
+        val locationTextView: TextView = itemView.findViewById(R.id.location)
+        val bookButton: Button = itemView.findViewById(R.id.book_button)
+    }
+}
+
+val transportList = listOf(
+    SustainableTransport("Bicicleta Elétrica", "Praça Central", false),
+    SustainableTransport("Carro Elétrico", "Rua 15", false),
+    SustainableTransport("Carona Solidária", "Av. Paulista", true)
+)
+
+val adapter = TransportAdapter(transportList)
+recyclerView.adapter = adapter
+`;
+
+        let index = 0;
+        let typingSpeed = 4; // Velocidade de digitação
+        const chunkSize = 2; // Quantidade de caracteres adicionados por vez
+
+        function typeCode() {
+            if (index < appCode.length) {
+                editor.textContent += appCode.slice(index, index + chunkSize);
+                index += chunkSize;
+
+                // Rolagem automática do editor
+                editor.scrollTop = editor.scrollHeight;
+
+                setTimeout(typeCode, typingSpeed);
+            } else {
+                renderApp();
+            }
+        }
+
+        function renderApp() {
+            // Substitui a visualização do app pelo conteúdo final
+            appPreview.innerHTML = `
+                <div class="option-card">
+                    <div>
+                        <h3>Bicicleta Elétrica</h3>
+                        <p>Localização: Praça Central</p>
+                    </div>
+                    <div class="option-actions">
+                        <i class="fas fa-bicycle"></i>
+                        <i class="fas fa-check-circle book"></i>
+                    </div>
+                </div>
+                <div class="option-card">
+                    <div>
+                        <h3>Carro Elétrico</h3>
+                        <p>Localização: Rua 15</p>
+                    </div>
+                    <div class="option-actions">
+                        <i class="fas fa-car"></i>
+                        <i class="fas fa-check-circle book"></i>
+                    </div>
+                </div>
+                <div class="option-card">
+                    <div>
+                        <h3>Carona Solidária</h3>
+                        <p>Localização: Av. Paulista</p>
+                    </div>
+                    <div class="option-actions">
+                        <i class="fas fa-users"></i>
+                        <i class="fas fa-check-circle book"></i>
+                    </div>
+                </div>
+                <button class="add-option"><i class="fas fa-plus-circle"></i> Adicionar Nova Opção</button>
+            `;
+        }
+
+        typeCode();
+    </script>
+</body>
+</html>

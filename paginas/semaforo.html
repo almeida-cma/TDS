@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de Semáforo Inteligente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        #codeContainer {
+            background-color: #222;
+            color: #0f0;
+            font-family: "Courier New", Courier, monospace;
+            padding: 15px;
+            width: 80%;
+            max-width: 800px;
+            height: 300px;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+        #simulationArea {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            height: 300px;
+            display: none; /* Oculta até a simulação começar */
+        }
+        #semaphore {
+            width: 100px;
+            height: 250px;
+            background-color: #333;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .light {
+            width: 80px;
+            height: 80px;
+            background-color: #555;
+            border-radius: 50%;
+            margin: 10px auto;
+            transition: background-color 1s ease-in-out;
+        }
+        .green { background-color: green; }
+        .yellow { background-color: yellow; }
+        .red { background-color: red; }
+        .sensor {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 20px;
+            transition: background-color 0.5s ease;
+        }
+        .active { background-color: green; }
+        .person, .vehicle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #777;
+            margin: 20px;
+            transition: transform 1s ease;
+        }
+        .person.active, .vehicle.active {
+            transform: translateX(200px);
+        }
+        .sensor-indicator {
+            display: flex;
+            justify-content: space-between;
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Simulação de Semáforo Inteligente</h1>
+    <!-- Área do Código -->
+    <div id="codeContainer"></div>
+
+    <!-- Área da Simulação -->
+    <div id="simulationArea">
+        <!-- Semáforo -->
+        <div id="semaphore">
+            <div class="light" id="greenLight"></div>
+            <div class="light" id="yellowLight"></div>
+            <div class="light" id="redLight"></div>
+        </div>
+
+        <!-- Sensores -->
+        <div class="sensor-indicator">
+            <div class="sensor" id="personSensor"></div>
+            <div class="sensor" id="vehicleSensor"></div>
+        </div>
+
+        <!-- Pessoas e Veículos -->
+        <div>
+            <div class="person" id="person"></div>
+            <div class="vehicle" id="vehicle"></div>
+        </div>
+    </div>
+
+    <script>
+        const codeLines = [
+            "// Simulação de Semáforo Inteligente com Sensores",
+            "let personActive = false;",
+            "let vehicleActive = false;",
+            "let semaphoreState = 'red';",
+            "",
+            "function updateSemaphore() {",
+            "    if (semaphoreState === 'green') {",
+            "        // Luz verde",
+            "    } else if (semaphoreState === 'yellow') {",
+            "        // Luz amarela",
+            "    } else if (semaphoreState === 'red') {",
+            "        // Luz vermelha",
+            "    }",
+            "}",
+            "",
+            "setInterval(() => {",
+            "    personActive = Math.random() < 0.5;",
+            "    vehicleActive = Math.random() < 0.5;",
+            "    if (personActive || vehicleActive) semaphoreState = 'green';",
+            "    else semaphoreState = 'red';",
+            "    updateSemaphore();",
+            "}, 3000);"
+        ];
+
+        const codeContainer = document.getElementById('codeContainer');
+        const simulationArea = document.getElementById('simulationArea');
+        let lineIndex = 0;
+
+        function typeCode() {
+            if (lineIndex < codeLines.length) {
+                codeContainer.textContent += codeLines[lineIndex] + "\n";
+                codeContainer.scrollTop = codeContainer.scrollHeight; // Rolagem automática
+                lineIndex++;
+                setTimeout(typeCode, 100); // Velocidade da digitação
+            } else {
+                startSimulation();
+            }
+        }
+
+        function startSimulation() {
+            simulationArea.style.display = 'flex';
+            let personActive = false;
+            let vehicleActive = false;
+            let semaphoreState = 'red';
+
+            const greenLight = document.getElementById('greenLight');
+            const yellowLight = document.getElementById('yellowLight');
+            const redLight = document.getElementById('redLight');
+            const personSensor = document.getElementById('personSensor');
+            const vehicleSensor = document.getElementById('vehicleSensor');
+            const person = document.getElementById('person');
+            const vehicle = document.getElementById('vehicle');
+
+            function updateSemaphore() {
+                if (semaphoreState === 'green') {
+                    greenLight.classList.add('green');
+                    yellowLight.classList.remove('yellow');
+                    redLight.classList.remove('red');
+                } else {
+                    greenLight.classList.remove('green');
+                    yellowLight.classList.remove('yellow');
+                    redLight.classList.add('red');
+                }
+            }
+
+            setInterval(() => {
+                personActive = Math.random() < 0.5;
+                vehicleActive = Math.random() < 0.5;
+
+                personSensor.classList.toggle('active', personActive);
+                vehicleSensor.classList.toggle('active', vehicleActive);
+                person.classList.toggle('active', personActive);
+                vehicle.classList.toggle('active', vehicleActive);
+
+                semaphoreState = (personActive || vehicleActive) ? 'green' : 'red';
+                updateSemaphore();
+            }, 3000);
+        }
+
+        // Inicia a digitação do código
+        typeCode();
+    </script>
+
+</body>
+</html>

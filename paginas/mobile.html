@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de App Mobile</title>
+    <style>
+        /* Estilos Gerais */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #222;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        /* Estilo do "Celular" */
+        .mobile-frame {
+            background: #000;
+            width: 300px;
+            height: 600px;
+            border: 10px solid #333;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* Tela do Editor */
+        #editor {
+            background-color: #111;
+            color: #00ff00;
+            padding: 10px;
+            height: 50%;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+
+        /* Tela de Visualização (Simulação do App) */
+        #app-preview {
+            background-color: #fff;
+            color: #333;
+            height: 50%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .product-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 90%;
+        }
+
+        .product-card h3 {
+            margin: 0 0 5px;
+            font-size: 14px;
+        }
+
+        .product-card p {
+            margin: 0;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulação de Criação de App Android</h1>
+    <div class="mobile-frame">
+        <div id="editor"></div>
+        <div id="app-preview">
+            <p>Carregando app...</p>
+        </div>
+    </div>
+
+    <script>
+        const editor = document.getElementById("editor");
+        const appPreview = document.getElementById("app-preview");
+
+        const appCode = `
+<!-- Simulação de Código HTML do App -->
+<div class="product-card">
+    <h3>Produto 1</h3>
+    <p>Preço: R$ 50,00</p>
+</div>
+<div class="product-card">
+    <h3>Produto 2</h3>
+    <p>Preço: R$ 75,00</p>
+</div>
+<div class="product-card">
+    <h3>Produto 3</h3>
+    <p>Preço: R$ 100,00</p>
+</div>
+`;
+
+        let index = 0;
+        let typingSpeed = 4; // Velocidade de digitação
+        const chunkSize = 1; // Quantidade de caracteres adicionados por vez
+
+        function typeCode() {
+            if (index < appCode.length) {
+                editor.textContent += appCode.slice(index, index + chunkSize);
+                index += chunkSize;
+
+                // Rolagem automática do editor
+                editor.scrollTop = editor.scrollHeight;
+
+                setTimeout(typeCode, typingSpeed);
+            } else {
+                renderApp();
+            }
+        }
+
+        function renderApp() {
+            // Substitui a visualização do app pelo conteúdo final
+            appPreview.innerHTML = `
+                <div class="product-card">
+                    <h3>Produto 1</h3>
+                    <p>Preço: R$ 50,00</p>
+                </div>
+                <div class="product-card">
+                    <h3>Produto 2</h3>
+                    <p>Preço: R$ 75,00</p>
+                </div>
+                <div class="product-card">
+                    <h3>Produto 3</h3>
+                    <p>Preço: R$ 100,00</p>
+                </div>
+            `;
+        }
+
+        typeCode();
+    </script>
+</body>
+</html>

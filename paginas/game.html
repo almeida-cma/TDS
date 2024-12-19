@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de Jogo Snake</title>
+    <style>
+        /* Estilos Gerais */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #222;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        /* Estilo do "Celular" */
+        .mobile-frame {
+            background: #000;
+            width: 300px;
+            height: 600px;
+            border: 10px solid #333;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Editor e Jogo */
+        #editor, #app-preview {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        /* Tela do Editor */
+        #editor {
+            background-color: #111;
+            color: #00ff00;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+
+        /* Tela de Visualização do Jogo */
+        #app-preview {
+            background-color: #fff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        canvas {
+            background: #000;
+            border: 2px solid #333;
+            display: block;
+            width: 90%; /* Ajuste automático para evitar cortes */
+            height: 90%;
+        }
+
+        /* Botões de Controle */
+        .controls {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+        }
+
+        .control-btn {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: 2px solid #333;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            width: 50px;
+            text-align: center;
+            user-select: none; /* Evita seleção do texto nos botões */
+        }
+
+        .control-btn:active {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .control-btn:focus {
+            outline: none; /* Evita foco nos botões */
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulação de Criação do Snake</h1>
+    <div class="mobile-frame">
+        <div id="editor"></div>
+        <div id="app-preview">
+            <p>Carregando jogo...</p>
+        </div>
+    </div>
+
+    <!-- Botões de controle para o jogo -->
+    <div class="controls">
+        <div class="control-btn" id="up">↑</div>
+        <div class="control-btn" id="left">←</div>
+        <div class="control-btn" id="right">→</div>
+        <div class="control-btn" id="down">↓</div>
+    </div>
+
+    <script>
+        const editor = document.getElementById("editor");
+        const appPreview = document.getElementById("app-preview");
+
+        const snakeCode = `
+// Configuração do canvas
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 300;
+canvas.height = 300;
+document.body.appendChild(canvas);
+
+// Variáveis do jogo
+let snake = [{ x: 150, y: 150 }];
+let food = { x: 100, y: 100 };
+let direction = { x: 0, y: 0 };
+let size = 10;
+let score = 0;
+
+// Função para desenhar o jogo
+function draw() {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Desenha a comida
+    ctx.fillStyle = 'red';
+    ctx.fillRect(food.x, food.y, size, size);
+
+    // Desenha a cobra
+    ctx.fillStyle = 'lime';
+    snake.forEach(segment => ctx.fillRect(segment.x, segment.y, size, size));
+
+    // Exibe o placar
+    ctx.fillStyle = '#fff';
+    ctx.fillText('Score: ' + score, 10, 10);
+}
+
+// Função para atualizar a posição da cobra
+function update() {
+    const head = { x: snake[0].x + direction.x * size, y: snake[0].y + direction.y * size };
+
+    // Adiciona a nova cabeça
+    snake.unshift(head);
+
+    // Verifica se a cobra comeu a comida
+    if (head.x === food.x && head.y === food.y) {
+        score++;
+        food.x = Math.floor(Math.random() * (canvas.width / size)) * size;
+        food.y = Math.floor(Math.random() * (canvas.height / size)) * size;
+    } else {
+        // Remove a cauda
+        snake.pop();
+    }
+
+    // Verifica colisões
+    if (
+        head.x < 0 || head.y < 0 || 
+        head.x >= canvas.width || head.y >= canvas.height ||
+        snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)
+    ) {
+        resetGame();
+    }
+}
+
+// Função para resetar o jogo
+function resetGame() {
+    snake = [{ x: 150, y: 150 }];
+    direction = { x: 0, y: 0 };
+    score = 0;
+}
+
+// Controle da cobra com setas virtuais
+document.getElementById("up").addEventListener("click", () => {
+    if (direction.y === 0) direction = { x: 0, y: -1 };
+});
+document.getElementById("down").addEventListener("click", () => {
+    if (direction.y === 0) direction = { x: 0, y: 1 };
+});
+document.getElementById("left").addEventListener("click", () => {
+    if (direction.x === 0) direction = { x: -1, y: 0 };
+});
+document.getElementById("right").addEventListener("click", () => {
+    if (direction.x === 0) direction = { x: 1, y: 0 };
+});
+
+// Função para controlar a cobra usando o teclado físico
+document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowUp" && direction.y === 0) {
+        direction = { x: 0, y: -1 };
+    }
+    if (event.key === "ArrowDown" && direction.y === 0) {
+        direction = { x: 0, y: 1 };
+    }
+    if (event.key === "ArrowLeft" && direction.x === 0) {
+        direction = { x: -1, y: 0 };
+    }
+    if (event.key === "ArrowRight" && direction.x === 0) {
+        direction = { x: 1, y: 0 };
+    }
+});
+
+// Loop principal do jogo
+function gameLoop() {
+    update();
+    draw();
+    setTimeout(gameLoop, 100);
+}
+
+// Inicializa o jogo
+gameLoop();
+`;
+
+        let index = 0;
+        let typingSpeed = 4; // Velocidade de digitação
+        const chunkSize = 3; // Quantidade de caracteres adicionados por vez
+
+        function typeCode() {
+            if (index < snakeCode.length) {
+                editor.textContent += snakeCode.slice(index, index + chunkSize);
+                index += chunkSize;
+
+                // Rolagem automática do editor
+                editor.scrollTop = editor.scrollHeight;
+
+                setTimeout(typeCode, typingSpeed);
+            } else {
+                renderGame();
+            }
+        }
+
+        function renderGame() {
+            // Substitui a visualização do app pelo jogo final
+            appPreview.innerHTML = '<canvas id="gameCanvas"></canvas>';
+
+            // Executa o código do jogo
+            eval(snakeCode);
+        }
+
+        typeCode();
+    </script>
+</body>
+</html>

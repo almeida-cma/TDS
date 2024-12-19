@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site com Acessibilidade</title>
+    <style>
+        /* Estilos padrão */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            margin: 20px 0;
+        }
+        #codeContainer {
+            background-color: #222;
+            color: #0f0;
+            font-family: "Courier New", Courier, monospace;
+            padding: 15px;
+            width: 80%;
+            max-width: 800px;
+            height: 300px;
+            overflow-y: auto;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+        #simulationArea {
+            display: none;
+            background-color: #ffffff; /* Fundo claro padrão */
+            color: #333; /* Texto escuro padrão */
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Botões */
+        button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Modo Alto Contraste */
+        .high-contrast {
+            background-color: #000000 !important; /* Fundo preto */
+            color: #FFFFFF !important; /* Texto branco */
+        }
+        .high-contrast #simulationArea {
+            background-color: #000000 !important; /* Fundo preto no segundo frame */
+            color: #FFFFFF !important; /* Texto branco */
+        }
+        .high-contrast .highlight {
+            color: #FFFF00 !important; /* Destaques em amarelo */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Simulação de Site com Acessibilidade</h1>
+
+    <!-- Área do Código -->
+    <div id="codeContainer"></div>
+
+    <!-- Área da Simulação -->
+    <div id="simulationArea">
+        <h2 class="highlight">Site com Recursos de Acessibilidade</h2>
+        <p class="highlight">Este é um exemplo de site que possui opções de acessibilidade.</p>
+        <p class="highlight">Você pode usar o <strong>Tab</strong> para navegar entre os botões e interagir com o site usando apenas o teclado.</p>
+        <button onclick="changeFontSize(2)">Aumentar Fonte</button>
+        <button onclick="changeFontSize(-2)">Diminuir Fonte</button>
+        <button onclick="toggleContrast()">Ativar/Desativar Alto Contraste</button>
+    </div>
+
+    <script>
+        const codeLines = [
+            "// Código HTML com recursos de acessibilidade",
+            "<!DOCTYPE html>",
+            "<html lang='pt-br'>",
+            "  <head>",
+            "    <title>Site Acessível</title>",
+            "    <style>",
+            "      .high-contrast { background-color: black; color: white; }",
+            "      .high-contrast .highlight { color: yellow; }",
+            "    </style>",
+            "  </head>",
+            "  <body>",
+            "    <h1>Site com Acessibilidade</h1>",
+            "    <p class='highlight'>Este é um exemplo de site que possui opções de acessibilidade.</p>",
+            "    <button onclick='changeFontSize(2)'>Aumentar Fonte</button>",
+            "    <button onclick='changeFontSize(-2)'>Diminuir Fonte</button>",
+            "    <button onclick='toggleContrast()'>Ativar Alto Contraste</button>",
+            "  </body>",
+            "</html>",
+            "",
+            "// Funções em JavaScript para interatividade",
+            "function changeFontSize(amount) {",
+            "    document.body.style.fontSize =",
+            "        (parseInt(getComputedStyle(document.body).fontSize) + amount) + 'px';",
+            "}",
+            "function toggleContrast() {",
+            "    document.body.classList.toggle('high-contrast');",
+            "}"
+        ];
+
+        const codeContainer = document.getElementById('codeContainer');
+        const simulationArea = document.getElementById('simulationArea');
+        let lineIndex = 0;
+
+        function typeCode() {
+            if (lineIndex < codeLines.length) {
+                codeContainer.textContent += codeLines[lineIndex] + "\n";
+                codeContainer.scrollTop = codeContainer.scrollHeight; // Rolagem automática
+                lineIndex++;
+                setTimeout(typeCode, 50); // Velocidade mais rápida
+            } else {
+                startSimulation();
+            }
+        }
+
+        function startSimulation() {
+            simulationArea.style.display = 'block';
+        }
+
+        // Aumentar ou diminuir o tamanho da fonte
+        function changeFontSize(amount) {
+            const currentSize = parseInt(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize + amount) + "px";
+        }
+
+        // Ativar/desativar alto contraste
+        function toggleContrast() {
+            document.body.classList.toggle('high-contrast');
+        }
+
+        // Inicia a digitação do código
+        typeCode();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de Cadastro de Estoque - Java</title>
+    <style>
+        /* Estilo Geral */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            flex-direction: column; /* Organiza o layout verticalmente */
+        }
+
+        /* Título principal */
+        h2 {
+            font-size: 22px;
+            color: #0078d7;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        /* Layout com dois painéis (Código e Resultado) */
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1200px;
+            height: 80%;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        /* Estilo do Editor de Código */
+        #editor {
+            background-color: #111;
+            color: #00ff00;
+            padding: 15px;
+            width: 100%;
+            height: 50%;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 14px;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+
+        @media (min-width: 768px) {
+            #editor {
+                width: 48%;
+                height: 100%;
+                border-right: 1px solid #ccc;
+            }
+        }
+
+        /* Estilo da tela de resultado */
+        #java-preview {
+            width: 100%;
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            #java-preview {
+                width: 48%;
+                height: 100%;
+                margin-top: 0;
+            }
+        }
+
+        /* Janela simulada com estilo Windows */
+        .window-frame {
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .window-title {
+            background-color: #0078d7;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .window-title .buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .window-title .button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 1px solid #0078d7;
+        }
+
+        /* Menu Simulado */
+        .menu {
+            background-color: #0078d7;
+            color: #fff;
+            display: flex;
+            padding: 10px 15px;
+            justify-content: flex-start; /* Alinha os itens à esquerda */
+            align-items: center;
+        }
+
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        .menu a:hover {
+            text-decoration: underline;
+        }
+
+        /* Formulário de Cadastro */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+            .form-group {
+                flex-direction: row;
+            }
+        }
+
+        .form-group label {
+            font-size: 16px;
+            width: 120px;
+        }
+
+        .form-group input {
+            padding: 10px;
+            width: 100%;
+            max-width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #0078d7;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .form-group button:hover {
+            background-color: #005bb5;
+        }
+
+        /* Tabela de Estoque */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #0078d7;
+            color: #fff;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        td input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Título no topo da tela principal -->
+    <h2>Simulação de aplicativo em ambiente desktop</h2>
+
+    <div class="container">
+        <!-- Editor de Código -->
+        <div id="editor"></div>
+
+        <!-- Tela de Resultado -->
+        <div id="java-preview" style="display: none;">
+            <div class="window-frame">
+                <div class="window-title">
+                    <span>Cadastro de Produtos</span>
+                    <div class="buttons">
+                        <div class="button"></div>
+                        <div class="button"></div>
+                        <div class="button"></div>
+                    </div>
+                </div>
+
+                <!-- Menu Simulado (Alinhado à esquerda) -->
+                <div class="menu">
+                    <a href="#">Arquivo</a>
+                    <a href="#">Editar</a>
+                    <a href="#">Ajuda</a>
+                </div>
+
+                <!-- Formulário de Cadastro -->
+                <div class="form-group">
+                    <label for="produto">Produto:</label>
+                    <input type="text" id="produto" placeholder="Nome do Produto" />
+                </div>
+                <div class="form-group">
+                    <label for="preco">Preço:</label>
+                    <input type="number" id="preco" placeholder="Preço" />
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" id="quantidade" placeholder="Quantidade" />
+                </div>
+                <div class="form-group">
+                    <button onclick="adicionarProduto()">Adicionar Produto</button>
+                </div>
+
+                <!-- Tabela de Estoque -->
+                <table id="estoque-table">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Preço</th>
+                            <th>Quantidade</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const editor = document.getElementById("editor");
+        const preview = document.getElementById("java-preview");
+
+        const javaCode = `
+import javax.swing.*;
+import java.awt.event.*;
+
+public class CadastroEstoque {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Cadastro de Produtos");
+        JPanel panel = new JPanel();
+        
+        JLabel label = new JLabel("Cadastro de Produtos");
+        panel.add(label);
+
+        JTextField produtoField = new JTextField(15);
+        panel.add(produtoField);
+
+        JTextField precoField = new JTextField(10);
+        panel.add(precoField);
+
+        JTextField quantidadeField = new JTextField(10);
+        panel.add(quantidadeField);
+
+        JButton button = new JButton("Adicionar Produto");
+        panel.add(button);
+
+        frame.add(panel);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+    }
+}`;
+
+        let index = 0;
+        let typingSpeed = 4;
+
+        function typeCode() {
+            if (index < javaCode.length) {
+                editor.textContent += javaCode.charAt(index);
+                index++;
+                editor.scrollTop = editor.scrollHeight;
+                setTimeout(typeCode, typingSpeed);
+            } else {
+                // Exibe a interface automaticamente após digitação
+                preview.style.display = "block";
+            }
+        }
+
+        typeCode();
+
+        // Função para adicionar produto na tabela
+        const produtos = [];
+        function adicionarProduto() {
+            const nomeProduto = document.getElementById("produto").value;
+            const precoProduto = document.getElementById("preco").value;
+            const quantidadeProduto = document.getElementById("quantidade").value;
+
+            if (nomeProduto && precoProduto && quantidadeProduto) {
+                produtos.push({
+                    nome: nomeProduto,
+                    preco: parseFloat(precoProduto),
+                    quantidade: parseInt(quantidadeProduto)
+                });
+
+                atualizarTabela();
+                document.getElementById("produto").value = '';
+                document.getElementById("preco").value = '';
+                document.getElementById("quantidade").value = '';
+            } else {
+                alert("Preencha todos os campos!");
+            }
+        }
+
+        function atualizarTabela() {
+            const tabela = document.getElementById("estoque-table").getElementsByTagName('tbody')[0];
+            tabela.innerHTML = '';
+
+            produtos.forEach(produto => {
+                const row = tabela.insertRow();
+                row.innerHTML = `
+                    <td>${produto.nome}</td>
+                    <td>R$ ${produto.preco.toFixed(2)}</td>
+                    <td>${produto.quantidade}</td>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>

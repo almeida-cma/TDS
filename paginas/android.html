@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de App Android - Kotlin</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Estilos Gerais */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+
+        /* Estilo do "Celular" */
+        .mobile-frame {
+            background: #fff;
+            width: 300px;
+            height: 600px;
+            border: 10px solid #ddd;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* Tela do Editor */
+        #editor {
+            background-color: #111;
+            color: #00ff00;
+            padding: 10px;
+            height: 50%;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+
+        /* Tela de Visualização (Simulação do App) */
+        #app-preview {
+            background-color: #f9f9f9;
+            color: #333;
+            height: 50%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 16px;
+            overflow-y: auto;
+        }
+
+        .task-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-card h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .task-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .task-actions i {
+            font-size: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        /* Cores dos Ícones e Ações */
+        .task-actions .complete {
+            color: #28a745; /* Verde para concluir */
+        }
+
+        .task-actions .delete {
+            color: #dc3545; /* Vermelho para deletar */
+        }
+
+        .task-actions i:hover {
+            opacity: 0.7;
+        }
+
+        /* Botão Adicionar Tarefa */
+        .add-task {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .add-task:hover {
+            background-color: #0056b3;
+        }
+
+        .add-task i {
+            margin-right: 10px;
+        }
+
+        /* Tarefa Concluída */
+        .completed {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .completed h3 {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+
+        .completed p {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulação de App Android - Kotlin</h1>
+    <div class="mobile-frame">
+        <div id="editor"></div>
+        <div id="app-preview">
+            <p>Carregando app...</p>
+        </div>
+    </div>
+
+    <script>
+        const editor = document.getElementById("editor");
+        const appPreview = document.getElementById("app-preview");
+
+        const appCode = `
+// Código Kotlin para Lista de Tarefas no Android
+
+class Task(val name: String, val dueDate: String, var isCompleted: Boolean)
+
+class TaskAdapter(val tasks: List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
+        return TaskViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val task = tasks[position]
+        holder.nameTextView.text = task.name
+        holder.dueDateTextView.text = task.dueDate
+        holder.completeButton.setOnClickListener {
+            task.isCompleted = !task.isCompleted
+            notifyItemChanged(position)
+        }
+    }
+
+    override fun getItemCount() = tasks.size
+
+    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val nameTextView: TextView = itemView.findViewById(R.id.task_name)
+        val dueDateTextView: TextView = itemView.findViewById(R.id.due_date)
+        val completeButton: Button = itemView.findViewById(R.id.complete_button)
+    }
+}
+
+val taskList = listOf(
+    Task("Comprar leite", "20/12/2024", false),
+    Task("Estudar para prova", "22/12/2024", false),
+    Task("Fazer compras", "25/12/2024", true)
+)
+
+val adapter = TaskAdapter(taskList)
+recyclerView.adapter = adapter
+`;
+
+        let index = 0;
+        let typingSpeed = 4; // Velocidade de digitação
+        const chunkSize = 2; // Quantidade de caracteres adicionados por vez
+
+        function typeCode() {
+            if (index < appCode.length) {
+                editor.textContent += appCode.slice(index, index + chunkSize);
+                index += chunkSize;
+
+                // Rolagem automática do editor
+                editor.scrollTop = editor.scrollHeight;
+
+                setTimeout(typeCode, typingSpeed);
+            } else {
+                renderApp();
+            }
+        }
+
+        function renderApp() {
+            // Substitui a visualização do app pelo conteúdo final
+            appPreview.innerHTML = `
+                <div class="task-card completed">
+                    <div>
+                        <h3>Tarefa 1 (Concluída)</h3>
+                        <p>Data de Conclusão: 20/12/2024</p>
+                    </div>
+                    <div class="task-actions">
+                        <i class="fas fa-check-circle complete"></i>
+                        <i class="fas fa-trash-alt delete"></i>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <h3>Tarefa 2</h3>
+                        <p>Data de Conclusão: 22/12/2024</p>
+                    </div>
+                    <div class="task-actions">
+                        <i class="fas fa-check-circle complete"></i>
+                        <i class="fas fa-trash-alt delete"></i>
+                    </div>
+                </div>
+                <div class="task-card">
+                    <div>
+                        <h3>Tarefa 3</h3>
+                        <p>Data de Conclusão: 25/12/2024</p>
+                    </div>
+                    <div class="task-actions">
+                        <i class="fas fa-check-circle complete"></i>
+                        <i class="fas fa-trash-alt delete"></i>
+                    </div>
+                </div>
+                <div class="add-task">
+                    <i class="fas fa-plus-circle"></i> Adicionar Tarefa
+                </div>
+            `;
+        }
+
+        typeCode();
+    </script>
+</body>
+</html>

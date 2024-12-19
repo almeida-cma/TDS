@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demonstração back-end</title>
+    <!-- CDN para ícones FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Estilo Geral */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            flex-direction: column;
+        }
+
+        /* Título no topo */
+        #title {
+            font-size: 32px;
+            color: #0078d7;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Título no topo */
+        h2 {
+            font-size: 24px;
+            color: #0078d7;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        /* Frame de código */
+        #code-frame {
+            width: 48%;
+            background-color: #1e1e1e;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            height: 400px;
+            overflow-y: auto;
+            font-size: 16px;
+        }
+
+        /* Painel de Produtos e Carrinho */
+        #right-panel {
+            width: 48%;
+            display: none; /* Inicialmente oculto */
+        }
+
+        #products {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #cart {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #products .product {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        .product button {
+            background-color: #0078d7;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .product button:hover {
+            background-color: #005bb5;
+        }
+
+        .product .price {
+            font-weight: bold;
+        }
+
+        #cart table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        #cart table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        #cart th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        #cart th {
+            background-color: #0078d7;
+            color: #fff;
+        }
+
+        #cart td {
+            background-color: #f9f9f9;
+        }
+
+        /* Botões e Interações */
+        .btn {
+            padding: 10px 20px;
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #005bb5;
+        }
+
+        /* Layout Flexível */
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #right-panel, #code-frame {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Título no topo -->
+    <div id="title">Demonstração back-end</div>
+
+    <div class="container">
+        <!-- Frame de Código -->
+        <div id="code-frame">
+            <!-- O código será exibido aqui -->
+        </div>
+
+        <!-- Painel Direito com Produtos e Carrinho -->
+        <div id="right-panel">
+            <div id="products">
+                <h3>Produtos Disponíveis</h3>
+                <div class="product">
+                    <span>Produto A</span>
+                    <span class="price">R$ 50,00</span>
+                    <button onclick="adicionarAoCarrinho('Produto A', 50)">Adicionar <i class="fas fa-cart-plus"></i></button>
+                </div>
+                <div class="product">
+                    <span>Produto B</span>
+                    <span class="price">R$ 30,00</span>
+                    <button onclick="adicionarAoCarrinho('Produto B', 30)">Adicionar <i class="fas fa-cart-plus"></i></button>
+                </div>
+                <div class="product">
+                    <span>Produto C</span>
+                    <span class="price">R$ 80,00</span>
+                    <button onclick="adicionarAoCarrinho('Produto C', 80)">Adicionar <i class="fas fa-cart-plus"></i></button>
+                </div>
+            </div>
+
+            <div id="cart">
+                <h3>Carrinho de Compras</h3>
+                <table id="cart-items">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Preço</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itens do carrinho aparecerão aqui -->
+                    </tbody>
+                </table>
+                <div>
+                    <strong>Total: </strong><span id="total-price">R$ 0,00</span>
+                </div>
+                <button class="btn" onclick="finalizarCompra()">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulação do carrinho de compras
+        const cart = [];
+        const totalPriceElement = document.getElementById("total-price");
+        const cartItemsTable = document.getElementById("cart-items").getElementsByTagName('tbody')[0];
+        const codeFrame = document.getElementById("code-frame");
+
+		const codeLines = [
+			"                        ",
+			"<?php", // Agora a linha <?php está indentada corretamente
+			"    // Inicia a sessão e conecta ao banco de dados SQLite",
+			"    $pdo = new PDO('sqlite:cart.db');",
+			"    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);",
+			"",
+			"    // Criação da tabela de produtos",
+			"    $pdo->exec('CREATE TABLE IF NOT EXISTS produtos (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, preco REAL)');",
+			"",
+			"    // Produtos disponíveis",
+			"    $produtos = [['Produto A', 50], ['Produto B', 30], ['Produto C', 80]];",
+			"    foreach ($produtos as $produto) {",
+			"        $stmt = $pdo->prepare('INSERT INTO produtos (nome, preco) VALUES (?, ?)');",
+			"        $stmt->execute($produto);",
+			"    }",
+			"",
+			"    // Funções para o carrinho",
+			"    function adicionarAoCarrinho($produto, $preco) {",
+			"        array_push($cart, ['nome' => $produto, 'preco' => $preco]);",
+			"    }",
+			"    function atualizarCarrinho() {",
+			"        // Atualiza o total e os itens no carrinho",
+			"    }",
+			"?>"
+		];
+
+
+        let lineIndex = 0;
+        let typingSpeed = 150; // Velocidade de digitação (mais lenta)
+
+        function simulateTyping() {
+            if (lineIndex < codeLines.length) {
+                codeFrame.textContent += codeLines[lineIndex] + "\n";
+                lineIndex++;
+
+                // Rola para o final do código enquanto ele é exibido
+                codeFrame.scrollTop = codeFrame.scrollHeight;
+
+                setTimeout(simulateTyping, typingSpeed);
+            } else {
+                setTimeout(() => {
+                    // Mostrar a interface após a digitação do código
+                    document.getElementById("right-panel").style.display = "block";
+                }, 1000);
+            }
+        }
+
+        // Função de adicionar ao carrinho
+        function adicionarAoCarrinho(produto, preco) {
+            cart.push({ nome: produto, preco: preco });
+            atualizarCarrinho();
+        }
+
+        function atualizarCarrinho() {
+            cartItemsTable.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const row = cartItemsTable.insertRow();
+                row.innerHTML = `
+                    <td>${item.nome}</td>
+                    <td>R$ ${item.preco.toFixed(2)}</td>
+                    <td><button class="btn" onclick="removerDoCarrinho('${item.nome}')"><i class="fas fa-trash-alt"></i> Remover</button></td>
+                `;
+                total += item.preco;
+            });
+            totalPriceElement.textContent = `R$ ${total.toFixed(2)}`;
+        }
+
+        function removerDoCarrinho(nome) {
+            const index = cart.findIndex(item => item.nome === nome);
+            if (index !== -1) {
+                cart.splice(index, 1);
+                atualizarCarrinho();
+            }
+        }
+
+        function finalizarCompra() {
+            alert('Compra finalizada!');
+            cart.length = 0; // Limpar o carrinho
+            atualizarCarrinho();
+        }
+
+        // Inicia a digitação do código
+        simulateTyping();
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+Tecnologia da Informação
+A Tecnologia da Informação (TI) é fundamental para a criação e gerenciamento de sistemas que facilitam a comunicação, o armazenamento e o processamento de dados. Ela está presente em todos os aspectos da sociedade moderna, desde pequenas empresas até grandes corporações.
+
+1.1 Empreendedorismo e Inovação Sustentável
+O empreendedorismo em TI busca criar soluções inovadoras e sustentáveis para os problemas do dia a dia. Isso envolve a criação de novos produtos, serviços ou modelos de negócios que sejam financeiramente viáveis e ao mesmo tempo ecológicos e socialmente responsáveis.
+
+Exemplo: Criar um aplicativo de transporte sustentável é como transformar uma ideia em ação, ajudando a resolver um problema social e ambiental.
+
+1.2 Educação Corporativa e Comportamental
+A educação corporativa em TI visa capacitar profissionais para que possam se adaptar às mudanças tecnológicas e desenvolver novas competências. A educação comportamental foca em como melhorar a interação e colaboração entre equipes.
+
+Exemplo: Treinar uma equipe de TI é como afiar as ferramentas de um artesão para garantir que o trabalho seja feito de forma eficiente e precisa.
+
+1.3 Tecnologia e Sistemas de Informação
+Os sistemas de informação são fundamentais para organizar e processar dados em uma organização. Eles ajudam a tomar decisões baseadas em dados, facilitando a gestão e a operação dos negócios.
+
+Exemplo: Sistemas de informação são como o cérebro de uma empresa, processando informações e enviando comandos para outras partes do sistema.
+
+Habilidade Comportamental: Autoconhecimento
+
+O autoconhecimento permite que profissionais de TI entendam suas forças e limitações, facilitando a adaptação a novos desafios e o aprimoramento contínuo.
+
+-----------------------------------------------------------------
+Programação de Sistemas
+A programação de sistemas envolve o uso de linguagens de programação para criar software que atenda a necessidades específicas. O desenvolvimento de sistemas também abrange a criação e manutenção de bancos de dados.
+
+2.1 Fundamentos de Programação
+Os fundamentos de programação incluem aprender a lógica de programação, como estruturas de controle, loops e variáveis, que são essenciais para o desenvolvimento de qualquer software.
+
+Exemplo: Programar é como ensinar uma máquina a realizar uma tarefa, passo a passo, de forma lógica e ordenada.
+
+2.2 Bancos de Dados
+Bancos de dados são usados para armazenar, organizar e gerenciar informações. O conhecimento de bancos de dados é essencial para criar sistemas que precisem de armazenamento persistente de dados.
+
+Exemplo: Bancos de dados são como bibliotecas digitais, onde você pode armazenar e acessar livros (dados) de forma rápida e organizada.
+
+Habilidade Comportamental: Criatividade
+
+A criatividade é fundamental para resolver problemas de forma inovadora e criar soluções que atendam às necessidades dos usuários de maneira única.
+---------------------------------------------------------------------
+
+Desenvolvimento Front-End
+O desenvolvimento front-end foca na criação da interface do usuário de um sistema. Ele envolve a programação de elementos visuais e a interação com o usuário em uma aplicação ou site.
+
+3.1 Programação Front-End
+Programação front-end envolve o uso de HTML, CSS e JavaScript para criar interfaces de usuário dinâmicas e interativas. A responsividade é uma característica importante para garantir que os sites funcionem bem em diferentes dispositivos.
+
+Exemplo: O front-end é como a fachada de um prédio. Ele é a primeira coisa que as pessoas veem e interagem.
+
+3.2 Administração de Websites
+A administração de websites envolve garantir que os sites funcionem corretamente, sejam seguros e estejam atualizados com o conteúdo necessário. Isso também inclui a análise de dados e a melhoria contínua da experiência do usuário.
+
+Exemplo: Administrar um website é como cuidar de uma loja física, garantindo que o ambiente esteja sempre limpo, organizado e atrativo para os clientes.
+
+Habilidade Comportamental: Gestão do tempo
+
+A gestão do tempo é essencial para priorizar tarefas e garantir que os projetos sejam entregues no prazo e com a qualidade esperada.
+------------------------------------------------------------------
+
+Qualidade de Software
+A qualidade de software envolve garantir que o sistema funcione de maneira eficiente, sem erros, e que atenda às expectativas do usuário. A experiência do usuário é um dos principais fatores para medir a qualidade de um software.
+
+4.1 Qualidade de Software
+A qualidade de software envolve práticas de desenvolvimento, como testes e revisões, para garantir que o sistema funcione corretamente em todas as condições.
+
+Exemplo: A qualidade de software é como testar um carro antes de vendê-lo, garantindo que ele funcione bem e seja seguro para os motoristas.
+
+4.2 Experiência de Usuário
+A experiência de usuário (UX) foca em como os usuários interagem com o sistema. A interface deve ser intuitiva e fácil de usar, proporcionando uma experiência agradável.
+
+Exemplo: A experiência de usuário é como desenhar um mapa claro para ajudar as pessoas a encontrar o caminho mais rápido e fácil.
+
+Habilidade Comportamental: Colaboração
+
+A colaboração é importante para trabalhar em equipe, especialmente ao desenvolver software, onde diferentes especialistas contribuem para a criação de um produto de alta qualidade.
+-----------------------------------------------------------------------
+
+Análise de Sistemas
+A análise de sistemas envolve o estudo e o planejamento de como os sistemas devem ser desenvolvidos, considerando as necessidades dos usuários e as especificações técnicas.
+
+5.1 Análise e Projetos em Sistemas
+Envolve a criação de um plano detalhado para o desenvolvimento do sistema, incluindo requisitos funcionais e não funcionais, fluxos de trabalho e cronograma.
+
+Exemplo: Analisar um sistema é como planejar a construção de uma casa, decidindo cada detalhe antes de começar a obra.
+
+5.2 Desenvolvimento de Aplicações
+Após a análise, o próximo passo é o desenvolvimento da aplicação. Isso envolve a programação, testes e a integração de componentes.
+
+Exemplo: Desenvolver uma aplicação é como construir um carro, onde cada parte precisa funcionar corretamente para que o carro ande bem.
+
+Habilidade Comportamental: Comunicação
+
+A comunicação eficaz é essencial para garantir que todos os membros da equipe compreendam as necessidades do projeto e trabalhem juntos para alcançar os objetivos.
+----------------------------------------------------------------------
+
+Desenvolvimento de Sistemas para Celulares
+O desenvolvimento de sistemas para celulares envolve a criação de aplicativos móveis, que podem ser nativos ou híbridos, para smartphones e tablets.
+
+6.1 Linguagem de Programação
+As linguagens de programação como JavaScript, HTML e CSS são essenciais para criar WebApps, que funcionam diretamente nos navegadores dos dispositivos móveis, além de garantir a responsividade.
+
+Exemplo: Programar um WebApp é como criar uma loja online que se adapta automaticamente ao tamanho da tela do dispositivo do cliente.
+
+6.2 Programação Mobile
+A programação mobile envolve o uso de ferramentas como Android Studio, React Native, App Inventor e Kodular para criar aplicativos nativos ou híbridos.
+
+Exemplo: Programar para dispositivos móveis é como construir uma casa em uma ilha, onde você deve garantir que ela funcione bem em diferentes terrenos e condições climáticas.
+
+Habilidade Comportamental: Resolução de problemas
+
+Resolver problemas é uma habilidade fundamental para o desenvolvimento mobile, pois é necessário encontrar soluções criativas para as limitações de hardware e software.
+------------------------------------------------------
+
+Desenvolvimento Back-End
+O desenvolvimento back-end é responsável pela criação de sistemas e servidores que processam as requisições dos usuários e retornam as informações solicitadas.
+
+7.1 Programação Back-End
+O back-end envolve a criação de APIs, servidores e banco de dados que garantem o funcionamento do sistema. Linguagens como Python, PHP e Node.js são frequentemente utilizadas.
+
+Exemplo: O back-end é como a parte interna de um restaurante, onde os chefs preparam a comida enquanto os garçons servem os clientes na parte da frente.
+
+7.2 Sistemas Inteligentes
+Sistemas inteligentes utilizam inteligência artificial e aprendizado de máquina para realizar tarefas complexas de forma autônoma, como recomendações de produtos ou diagnósticos médicos.
+
+Exemplo: Sistemas inteligentes são como assistentes virtuais que aprendem com suas interações e melhoram com o tempo.
+
+Habilidade Comportamental: Empregabilidade
+
+Empregabilidade é a habilidade de se adaptar rapidamente ao mercado de trabalho, sempre aprendendo novas tecnologias e mantendo-se relevante na profissão.
+------------------------------------------------------------
+
+Administração de Redes
+A administração de redes envolve a criação e manutenção de redes de computadores, garantindo que a comunicação entre os sistemas seja eficiente e segura.
+
+8.1 Internet e Redes
+Gerenciar redes de computadores envolve garantir que os sistemas possam se comunicar entre si de forma eficiente e segura. Isso inclui a configuração de servidores e roteadores.
+
+Exemplo: Gerenciar redes é como garantir que os trilhos de trem estejam livres e funcionando para o tráfego de passageiros.
+
+8.2 Segurança da Informação
+A segurança da informação protege os dados e as comunicações contra acessos não autorizados. Isso inclui a criptografia e a implementação de firewalls e VPNs.
+
+Exemplo: A segurança da informação é como ter uma fechadura robusta e um sistema de vigilância em um banco para proteger os bens dos clientes.
+
+Habilidade Comportamental: Autorregulação
+
+A autorregulação é a habilidade de manter o controle sobre as emoções e reações diante de situações estressantes, essencial para profissionais de redes que lidam com situações críticas.
+-----------------------------------------------------------------------------------------------------------------------------
